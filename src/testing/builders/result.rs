@@ -89,6 +89,7 @@ impl ResultMessageBuilder {
             is_error: self.is_error,
             session_id: self.session_id,
             usage: None,
+            model_usage: None,
             result: self.result,
             structured_output: None,
         })
