@@ -1,5 +1,6 @@
 //! Transport layer for communicating with Claude Code CLI
 
+pub(crate) mod wire_log;
 pub mod subprocess;
 mod trait_def;
 

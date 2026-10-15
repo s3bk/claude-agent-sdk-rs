@@ -48,6 +48,9 @@ pub enum Message {
     /// Control cancel request (ignore this - it's internal control protocol)
     #[serde(rename = "control_cancel_request")]
     ControlCancelRequest(serde_json::Value),
+    /// Rate limit status event emitted by newer CLI versions (payload kept raw)
+    #[serde(rename = "rate_limit_event")]
+    RateLimitEvent(serde_json::Value),
 }
 
 /// User message
@@ -435,6 +438,16 @@ impl From<&str> for UserContentBlock {
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn test_parse_rate_limit_event() {
+        let msg: Message = serde_json::from_value(json!({
+            "type": "rate_limit_event",
+            "rate_limit_info": {"status": "allowed"}
+        }))
+        .unwrap();
+        assert!(matches!(msg, Message::RateLimitEvent(_)));
+    }
 
     #[test]
     fn test_content_block_text_serialization() {

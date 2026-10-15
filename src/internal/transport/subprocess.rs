@@ -752,6 +752,7 @@ impl Transport for SubprocessTransport {
     }
 
     async fn write(&self, data: &str) -> Result<()> {
+        super::wire_log::log("send", data);
         let mut stdin_guard = self.stdin.lock().await;
         if let Some(ref mut stdin) = *stdin_guard {
             stdin
@@ -804,6 +805,7 @@ impl Transport for SubprocessTransport {
                                 continue;
                             }
 
+                            super::wire_log::log("recv", trimmed);
                             match serde_json::from_str::<serde_json::Value>(trimmed) {
                                 Ok(json) => {
                                     yield Ok(json);
